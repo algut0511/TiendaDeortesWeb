@@ -1,0 +1,486 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="tiendaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="categorias">
+          <Key>
+            <PropertyRef Name="id_categorias" />
+          </Key>
+          <Property Name="id_categorias" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre_categoria" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="id_categoria_padre" Type="int" />
+        </EntityType>
+        <EntityType Name="dominios">
+          <Key>
+            <PropertyRef Name="tipo_dominio" />
+            <PropertyRef Name="id_dominio" />
+          </Key>
+          <Property Name="tipo_dominio" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="id_dominio" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="valor_dominio" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="fabricantes">
+          <Key>
+            <PropertyRef Name="id_fabricante" />
+          </Key>
+          <Property Name="id_fabricante" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre_fabricante" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="pais_fabricantes" Type="varchar" MaxLength="3" Nullable="false" />
+        </EntityType>
+        <EntityType Name="personas">
+          <Key>
+            <PropertyRef Name="id_persona" />
+            <PropertyRef Name="tipo_persona" />
+          </Key>
+          <Property Name="id_persona" Type="numeric" Precision="12" Scale="0" Nullable="false" />
+          <Property Name="nombre_persona" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="apellido_persona" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="telefono_persona" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="email_persona" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="direccion_persona" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="contrasena" Type="varchar" MaxLength="8" />
+          <Property Name="tipo_persona" Type="varchar" MaxLength="3" Nullable="false" />
+        </EntityType>
+        <EntityType Name="productos">
+          <Key>
+            <PropertyRef Name="id_producto" />
+          </Key>
+          <Property Name="id_producto" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre_producto" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="detalle_producto" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="precio_actual" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="unidades_disponibles" Type="int" Nullable="false" />
+          <Property Name="id_categoria" Type="int" Nullable="false" />
+          <Property Name="id_fabricante" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="venta_productos">
+          <Key>
+            <PropertyRef Name="id_venta_producto" />
+          </Key>
+          <Property Name="id_venta_producto" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_venta" Type="int" Nullable="false" />
+          <Property Name="id_producto" Type="int" Nullable="false" />
+          <Property Name="precio_venta" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="cantidad" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ventas">
+          <Key>
+            <PropertyRef Name="id_venta" />
+          </Key>
+          <Property Name="id_venta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fecha_venta" Type="date" Nullable="false" />
+          <Property Name="valor_iva" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="id_persona" Type="numeric" Precision="12" Scale="0" Nullable="false" />
+          <Property Name="tipo_persona" Type="varchar" MaxLength="3" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__categoria__id_ca__4BAC3F29">
+          <End Role="categorias" Type="Self.categorias" Multiplicity="0..1" />
+          <End Role="categorias1" Type="Self.categorias" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="categorias">
+              <PropertyRef Name="id_categorias" />
+            </Principal>
+            <Dependent Role="categorias1">
+              <PropertyRef Name="id_categoria_padre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__productos__id_ca__5165187F">
+          <End Role="categorias" Type="Self.categorias" Multiplicity="1" />
+          <End Role="productos" Type="Self.productos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="categorias">
+              <PropertyRef Name="id_categorias" />
+            </Principal>
+            <Dependent Role="productos">
+              <PropertyRef Name="id_categoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__productos__id_fa__52593CB8">
+          <End Role="fabricantes" Type="Self.fabricantes" Multiplicity="1" />
+          <End Role="productos" Type="Self.productos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fabricantes">
+              <PropertyRef Name="id_fabricante" />
+            </Principal>
+            <Dependent Role="productos">
+              <PropertyRef Name="id_fabricante" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__venta_pro__id_pr__59063A47">
+          <End Role="productos" Type="Self.productos" Multiplicity="1" />
+          <End Role="venta_productos" Type="Self.venta_productos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productos">
+              <PropertyRef Name="id_producto" />
+            </Principal>
+            <Dependent Role="venta_productos">
+              <PropertyRef Name="id_producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__venta_pro__id_ve__5812160E">
+          <End Role="ventas" Type="Self.ventas" Multiplicity="1" />
+          <End Role="venta_productos" Type="Self.venta_productos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ventas">
+              <PropertyRef Name="id_venta" />
+            </Principal>
+            <Dependent Role="venta_productos">
+              <PropertyRef Name="id_venta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ventas__5535A963">
+          <End Role="personas" Type="Self.personas" Multiplicity="1" />
+          <End Role="ventas" Type="Self.ventas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="personas">
+              <PropertyRef Name="id_persona" />
+              <PropertyRef Name="tipo_persona" />
+            </Principal>
+            <Dependent Role="ventas">
+              <PropertyRef Name="id_persona" />
+              <PropertyRef Name="tipo_persona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="tiendaModelStoreContainer">
+          <EntitySet Name="categorias" EntityType="Self.categorias" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="dominios" EntityType="Self.dominios" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="fabricantes" EntityType="Self.fabricantes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="personas" EntityType="Self.personas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="productos" EntityType="Self.productos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="venta_productos" EntityType="Self.venta_productos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ventas" EntityType="Self.ventas" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__categoria__id_ca__4BAC3F29" Association="Self.FK__categoria__id_ca__4BAC3F29">
+            <End Role="categorias" EntitySet="categorias" />
+            <End Role="categorias1" EntitySet="categorias" />
+          </AssociationSet>
+          <AssociationSet Name="FK__productos__id_ca__5165187F" Association="Self.FK__productos__id_ca__5165187F">
+            <End Role="categorias" EntitySet="categorias" />
+            <End Role="productos" EntitySet="productos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__productos__id_fa__52593CB8" Association="Self.FK__productos__id_fa__52593CB8">
+            <End Role="fabricantes" EntitySet="fabricantes" />
+            <End Role="productos" EntitySet="productos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__venta_pro__id_pr__59063A47" Association="Self.FK__venta_pro__id_pr__59063A47">
+            <End Role="productos" EntitySet="productos" />
+            <End Role="venta_productos" EntitySet="venta_productos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__venta_pro__id_ve__5812160E" Association="Self.FK__venta_pro__id_ve__5812160E">
+            <End Role="ventas" EntitySet="ventas" />
+            <End Role="venta_productos" EntitySet="venta_productos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ventas__5535A963" Association="Self.FK__ventas__5535A963">
+            <End Role="personas" EntitySet="personas" />
+            <End Role="ventas" EntitySet="ventas" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="tiendaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="categorias">
+          <Key>
+            <PropertyRef Name="id_categorias" />
+          </Key>
+          <Property Name="id_categorias" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre_categoria" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="id_categoria_padre" Type="Int32" />
+          <NavigationProperty Name="categorias1" Relationship="Self.FK__categoria__id_ca__4BAC3F29" FromRole="categorias" ToRole="categorias1" />
+          <NavigationProperty Name="categorias2" Relationship="Self.FK__categoria__id_ca__4BAC3F29" FromRole="categorias1" ToRole="categorias" />
+          <NavigationProperty Name="productos" Relationship="Self.FK__productos__id_ca__5165187F" FromRole="categorias" ToRole="productos" />
+        </EntityType>
+        <EntityType Name="dominios">
+          <Key>
+            <PropertyRef Name="tipo_dominio" />
+            <PropertyRef Name="id_dominio" />
+          </Key>
+          <Property Name="tipo_dominio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="id_dominio" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="valor_dominio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="fabricantes">
+          <Key>
+            <PropertyRef Name="id_fabricante" />
+          </Key>
+          <Property Name="id_fabricante" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre_fabricante" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="pais_fabricantes" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="productos" Relationship="Self.FK__productos__id_fa__52593CB8" FromRole="fabricantes" ToRole="productos" />
+        </EntityType>
+        <EntityType Name="personas">
+          <Key>
+            <PropertyRef Name="id_persona" />
+            <PropertyRef Name="tipo_persona" />
+          </Key>
+          <Property Name="id_persona" Type="Decimal" Precision="12" Scale="0" Nullable="false" />
+          <Property Name="nombre_persona" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="apellido_persona" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="telefono_persona" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="email_persona" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="direccion_persona" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="contrasena" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="tipo_persona" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="ventas" Relationship="Self.FK__ventas__5535A963" FromRole="personas" ToRole="ventas" />
+        </EntityType>
+        <EntityType Name="productos">
+          <Key>
+            <PropertyRef Name="id_producto" />
+          </Key>
+          <Property Name="id_producto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre_producto" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="detalle_producto" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="precio_actual" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="unidades_disponibles" Type="Int32" Nullable="false" />
+          <Property Name="id_categoria" Type="Int32" Nullable="false" />
+          <Property Name="id_fabricante" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="categorias" Relationship="Self.FK__productos__id_ca__5165187F" FromRole="productos" ToRole="categorias" />
+          <NavigationProperty Name="fabricantes" Relationship="Self.FK__productos__id_fa__52593CB8" FromRole="productos" ToRole="fabricantes" />
+          <NavigationProperty Name="venta_productos" Relationship="Self.FK__venta_pro__id_pr__59063A47" FromRole="productos" ToRole="venta_productos" />
+        </EntityType>
+        <EntityType Name="venta_productos">
+          <Key>
+            <PropertyRef Name="id_venta_producto" />
+          </Key>
+          <Property Name="id_venta_producto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_venta" Type="Int32" Nullable="false" />
+          <Property Name="id_producto" Type="Int32" Nullable="false" />
+          <Property Name="precio_venta" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="cantidad" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="productos" Relationship="Self.FK__venta_pro__id_pr__59063A47" FromRole="venta_productos" ToRole="productos" />
+          <NavigationProperty Name="ventas" Relationship="Self.FK__venta_pro__id_ve__5812160E" FromRole="venta_productos" ToRole="ventas" />
+        </EntityType>
+        <EntityType Name="ventas">
+          <Key>
+            <PropertyRef Name="id_venta" />
+          </Key>
+          <Property Name="id_venta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fecha_venta" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="valor_iva" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="id_persona" Type="Decimal" Precision="12" Scale="0" Nullable="false" />
+          <Property Name="tipo_persona" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="personas" Relationship="Self.FK__ventas__5535A963" FromRole="ventas" ToRole="personas" />
+          <NavigationProperty Name="venta_productos" Relationship="Self.FK__venta_pro__id_ve__5812160E" FromRole="ventas" ToRole="venta_productos" />
+        </EntityType>
+        <Association Name="FK__categoria__id_ca__4BAC3F29">
+          <End Role="categorias" Type="Self.categorias" Multiplicity="0..1" />
+          <End Role="categorias1" Type="Self.categorias" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="categorias">
+              <PropertyRef Name="id_categorias" />
+            </Principal>
+            <Dependent Role="categorias1">
+              <PropertyRef Name="id_categoria_padre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__productos__id_ca__5165187F">
+          <End Role="categorias" Type="Self.categorias" Multiplicity="1" />
+          <End Role="productos" Type="Self.productos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="categorias">
+              <PropertyRef Name="id_categorias" />
+            </Principal>
+            <Dependent Role="productos">
+              <PropertyRef Name="id_categoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__productos__id_fa__52593CB8">
+          <End Role="fabricantes" Type="Self.fabricantes" Multiplicity="1" />
+          <End Role="productos" Type="Self.productos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fabricantes">
+              <PropertyRef Name="id_fabricante" />
+            </Principal>
+            <Dependent Role="productos">
+              <PropertyRef Name="id_fabricante" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ventas__5535A963">
+          <End Role="personas" Type="Self.personas" Multiplicity="1" />
+          <End Role="ventas" Type="Self.ventas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="personas">
+              <PropertyRef Name="id_persona" />
+              <PropertyRef Name="tipo_persona" />
+            </Principal>
+            <Dependent Role="ventas">
+              <PropertyRef Name="id_persona" />
+              <PropertyRef Name="tipo_persona" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__venta_pro__id_pr__59063A47">
+          <End Role="productos" Type="Self.productos" Multiplicity="1" />
+          <End Role="venta_productos" Type="Self.venta_productos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productos">
+              <PropertyRef Name="id_producto" />
+            </Principal>
+            <Dependent Role="venta_productos">
+              <PropertyRef Name="id_producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__venta_pro__id_ve__5812160E">
+          <End Role="ventas" Type="Self.ventas" Multiplicity="1" />
+          <End Role="venta_productos" Type="Self.venta_productos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ventas">
+              <PropertyRef Name="id_venta" />
+            </Principal>
+            <Dependent Role="venta_productos">
+              <PropertyRef Name="id_venta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="tiendaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="categorias" EntityType="Self.categorias" />
+          <EntitySet Name="dominios" EntityType="Self.dominios" />
+          <EntitySet Name="fabricantes" EntityType="Self.fabricantes" />
+          <EntitySet Name="personas" EntityType="Self.personas" />
+          <EntitySet Name="productos" EntityType="Self.productos" />
+          <EntitySet Name="venta_productos" EntityType="Self.venta_productos" />
+          <EntitySet Name="ventas" EntityType="Self.ventas" />
+          <AssociationSet Name="FK__categoria__id_ca__4BAC3F29" Association="Self.FK__categoria__id_ca__4BAC3F29">
+            <End Role="categorias" EntitySet="categorias" />
+            <End Role="categorias1" EntitySet="categorias" />
+          </AssociationSet>
+          <AssociationSet Name="FK__productos__id_ca__5165187F" Association="Self.FK__productos__id_ca__5165187F">
+            <End Role="categorias" EntitySet="categorias" />
+            <End Role="productos" EntitySet="productos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__productos__id_fa__52593CB8" Association="Self.FK__productos__id_fa__52593CB8">
+            <End Role="fabricantes" EntitySet="fabricantes" />
+            <End Role="productos" EntitySet="productos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ventas__5535A963" Association="Self.FK__ventas__5535A963">
+            <End Role="personas" EntitySet="personas" />
+            <End Role="ventas" EntitySet="ventas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__venta_pro__id_pr__59063A47" Association="Self.FK__venta_pro__id_pr__59063A47">
+            <End Role="productos" EntitySet="productos" />
+            <End Role="venta_productos" EntitySet="venta_productos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__venta_pro__id_ve__5812160E" Association="Self.FK__venta_pro__id_ve__5812160E">
+            <End Role="ventas" EntitySet="ventas" />
+            <End Role="venta_productos" EntitySet="venta_productos" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="tiendaModelStoreContainer" CdmEntityContainer="tiendaEntities">
+          <EntitySetMapping Name="categorias">
+            <EntityTypeMapping TypeName="tiendaModel.categorias">
+              <MappingFragment StoreEntitySet="categorias">
+                <ScalarProperty Name="id_categorias" ColumnName="id_categorias" />
+                <ScalarProperty Name="nombre_categoria" ColumnName="nombre_categoria" />
+                <ScalarProperty Name="id_categoria_padre" ColumnName="id_categoria_padre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dominios">
+            <EntityTypeMapping TypeName="tiendaModel.dominios">
+              <MappingFragment StoreEntitySet="dominios">
+                <ScalarProperty Name="tipo_dominio" ColumnName="tipo_dominio" />
+                <ScalarProperty Name="id_dominio" ColumnName="id_dominio" />
+                <ScalarProperty Name="valor_dominio" ColumnName="valor_dominio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="fabricantes">
+            <EntityTypeMapping TypeName="tiendaModel.fabricantes">
+              <MappingFragment StoreEntitySet="fabricantes">
+                <ScalarProperty Name="id_fabricante" ColumnName="id_fabricante" />
+                <ScalarProperty Name="nombre_fabricante" ColumnName="nombre_fabricante" />
+                <ScalarProperty Name="pais_fabricantes" ColumnName="pais_fabricantes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="personas">
+            <EntityTypeMapping TypeName="tiendaModel.personas">
+              <MappingFragment StoreEntitySet="personas">
+                <ScalarProperty Name="id_persona" ColumnName="id_persona" />
+                <ScalarProperty Name="nombre_persona" ColumnName="nombre_persona" />
+                <ScalarProperty Name="apellido_persona" ColumnName="apellido_persona" />
+                <ScalarProperty Name="telefono_persona" ColumnName="telefono_persona" />
+                <ScalarProperty Name="email_persona" ColumnName="email_persona" />
+                <ScalarProperty Name="direccion_persona" ColumnName="direccion_persona" />
+                <ScalarProperty Name="contrasena" ColumnName="contrasena" />
+                <ScalarProperty Name="tipo_persona" ColumnName="tipo_persona" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="productos">
+            <EntityTypeMapping TypeName="tiendaModel.productos">
+              <MappingFragment StoreEntitySet="productos">
+                <ScalarProperty Name="id_producto" ColumnName="id_producto" />
+                <ScalarProperty Name="nombre_producto" ColumnName="nombre_producto" />
+                <ScalarProperty Name="detalle_producto" ColumnName="detalle_producto" />
+                <ScalarProperty Name="precio_actual" ColumnName="precio_actual" />
+                <ScalarProperty Name="unidades_disponibles" ColumnName="unidades_disponibles" />
+                <ScalarProperty Name="id_categoria" ColumnName="id_categoria" />
+                <ScalarProperty Name="id_fabricante" ColumnName="id_fabricante" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="venta_productos">
+            <EntityTypeMapping TypeName="tiendaModel.venta_productos">
+              <MappingFragment StoreEntitySet="venta_productos">
+                <ScalarProperty Name="id_venta_producto" ColumnName="id_venta_producto" />
+                <ScalarProperty Name="id_venta" ColumnName="id_venta" />
+                <ScalarProperty Name="id_producto" ColumnName="id_producto" />
+                <ScalarProperty Name="precio_venta" ColumnName="precio_venta" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ventas">
+            <EntityTypeMapping TypeName="tiendaModel.ventas">
+              <MappingFragment StoreEntitySet="ventas">
+                <ScalarProperty Name="id_venta" ColumnName="id_venta" />
+                <ScalarProperty Name="fecha_venta" ColumnName="fecha_venta" />
+                <ScalarProperty Name="valor_iva" ColumnName="valor_iva" />
+                <ScalarProperty Name="id_persona" ColumnName="id_persona" />
+                <ScalarProperty Name="tipo_persona" ColumnName="tipo_persona" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
