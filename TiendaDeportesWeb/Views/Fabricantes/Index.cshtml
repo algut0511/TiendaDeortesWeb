@@ -1,0 +1,35 @@
+﻿ @model List<TiendaDeportesWeb.Models.DTOs.FabricantesDTO>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>FABRICANTES</h2>
+<div class ="row">
+    <div class="col-md-12">
+        <input type="button" class="btn btn-primary" value="Nuevo"
+               onclick="document.location.href='@Url.Content("~/Fabricantes/add")'"/>
+    </div>
+</div>
+<br/>
+<div class ="row">
+    <div class="col-lg-12">
+        <table class="table table-bordered">
+            <tr>
+                <th>ID FABRICANTE</th>
+                <th>NOMBRE FABRICANTE</th>
+                <th>PAIS FABRICANTE</th>
+            </tr>
+            @foreach (var oFabricante in Model)
+            {
+        <tr>
+            <td>@oFabricante.idFabrbricante</td>
+            <td>@oFabricante.nomFabrbricante</td>
+            <td>@oFabricante.paisFabrbricante</td>
+        </tr>
+            }
+        </table>
+    </div>
+</div>
+
+
+

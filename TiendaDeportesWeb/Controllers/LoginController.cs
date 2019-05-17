@@ -20,14 +20,21 @@ namespace TiendaDeportesWeb.Controllers
             {
                 using (tiendaEntities db = new tiendaEntities())
                 {
+                    decimal idUser;
+                    decimal.TryParse(user, out idUser);
+
                     var usuarios = from p in db.personas
-                                   where p.id_persona == int.Parse(user) && p.contrasena == pwd && p.tipo_persona == "emp"
+                                   where p.id_persona == idUser && p.contrasena == pwd && p.tipo_persona == "emp"
                                    select p;
                     if (usuarios.Count()> 0)
                     {
                         personas oPersonas = usuarios.First();
                         Session["user"] = oPersonas;
                         return Content("1");
+                    }
+                    else
+                    {
+                        return Content("Usuario o contraseña incorrectos");
                     }
 
                 }

@@ -8,6 +8,9 @@ namespace TiendaDeportesWeb
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            //habilitar el filtro de sesión
+
+           // filters.Add(new Filters.Verificar_Session());
         }
     }
 }
