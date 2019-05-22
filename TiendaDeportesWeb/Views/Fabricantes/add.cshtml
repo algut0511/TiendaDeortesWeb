@@ -1,0 +1,27 @@
+﻿@model TiendaDeportesWeb.Models.DTOs.FabricantesDTO
+@{
+    ViewBag.Title = "Gestionar Fabricante";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class=" =row">
+    <div class="col-md-12">
+        <!-- Inicio del formulario de insersión de datos params (1-> Action, 2->Controller, 3 ->nMethod, 4->Params) -->
+        @using (Html.BeginForm("Add", "Fabricantes", FormMethod.Post, new { role = "form" }))
+        {
+            @Html.LabelFor(f => f.nomFabrbricante)
+            @Html.TextBoxFor(f => f.nomFabrbricante, new { @class = "form-control" })
+
+            @Html.LabelFor(f => f.paisFabrbricante)
+            @Html.DropDownListFor(f => Model.paisFabrbricante,
+           new SelectList (Model.lstPaises, "id_dominio", "vlr_Dominio"),
+           new { @class = "form-control", id = "pais" })
+
+            <div style="text-align:left">
+                <input type="submit" class="btn btn-success" value=" Guardar" />
+            </div>
+        }
+    </div>
+</div>
+

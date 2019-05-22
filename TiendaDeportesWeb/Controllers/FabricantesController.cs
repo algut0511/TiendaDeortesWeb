@@ -27,5 +27,25 @@ namespace TiendaDeportesWeb.Controllers
             }
                 return View(lstFabricantes);
         }
+        public ActionResult Add()
+        {
+            FabricantesDTO fabricantesDTO = new FabricantesDTO();
+            List<dominios> lstPaises = null;
+
+            using (tiendaEntities db = new tiendaEntities())
+                {
+                lstPaises = (from d in db.dominios
+                            where d.tipo_dominio == "PAISES"
+                            orderby d.valor_dominio
+                            select new dominios
+                            {
+                                id_dominio = d.id_dominio,
+                                valor_dominio = d.valor_dominio
+
+                            }).ToList();
+                fabricantesDTO.lstPaises = lstPaises;
+            }
+            return View(fabricantesDTO);
+        }
     }
 }
